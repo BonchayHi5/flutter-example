@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "683577244879",
+    "firebase_url": "https://reancafe-7934c.firebaseio.com",
+    "project_id": "reancafe-7934c",
+    "storage_bucket": "reancafe-7934c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683577244879:android:62d0d26ee38844212d0bba",
+        "android_client_info": {
+          "package_name": "com.example.flutter_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683577244879-vormd8vkj91l76dkbhl9o6dlvh2h9hj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLMKUDWAV_eVFhyJckiRRTiWdiDHwp9EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683577244879-vormd8vkj91l76dkbhl9o6dlvh2h9hj0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "683577244879-fqdtr8rnudcfohpq3jdddchj3qjon80h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reancafe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683577244879:android:46209984bf1494752d0bba",
+        "android_client_info": {
+          "package_name": "com.example.reancafe_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683577244879-vormd8vkj91l76dkbhl9o6dlvh2h9hj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLMKUDWAV_eVFhyJckiRRTiWdiDHwp9EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683577244879-vormd8vkj91l76dkbhl9o6dlvh2h9hj0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "683577244879-fqdtr8rnudcfohpq3jdddchj3qjon80h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reancafe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
