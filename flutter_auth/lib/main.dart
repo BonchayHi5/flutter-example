@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/core/auth.dart';
+import 'package:flutter_auth/screen/sign_in.dart';
+import 'package:flutter_auth/screen/sign_up.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,16 +43,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Auth _auth = Auth();
+  void navigateSignIn() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+  }
 
-  final _signUpKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  onSubmit() async {
-    if (_signUpKey.currentState.validate()) {
-      await _auth.signUp(_emailController.text, _passwordController.text);
-    }
+  void navigateSignUp() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
   }
 
   @override
@@ -60,35 +58,18 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _signUpKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(hintText: 'Email'),
-                  validator: (value) =>
-                      value.isEmpty ? 'Please fill in email' : null,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(hintText: 'Password'),
-                  validator: (value) =>
-                      value.isEmpty ? 'Please fill in password' : null,
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: RaisedButton(
-                    onPressed: () {},
-                    child: Text('Sign Up'),
-                  ),
-                )
-              ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+              onPressed: navigateSignIn,
+              child: Text('Sign In'),
             ),
-          ),
+            RaisedButton(
+              onPressed: navigateSignUp,
+              child: Text('Sign Up'),
+            ),
+          ],
         ),
       ),
     );
