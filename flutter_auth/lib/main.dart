@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/core/auth.dart';
 import 'package:flutter_auth/screen/sign_in.dart';
 import 'package:flutter_auth/screen/sign_up.dart';
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/core/auth.dart';
+import 'package:flutter_auth/core/dialog.dart';
+import 'package:flutter_auth/screen/home.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -27,12 +29,21 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       _isLoading = true;
     });
+    final res = await _auth.signUp(_emailController.text, _passwordController.text);
 
-     
+    if (res != null) {
+      
+      setState(() {
+        _isLoading = true;
+      });
 
-    setState(() {
-      _isLoading = false;
-    });
+      if (res['error'] != null) {
+        await dialog(context, 'Error', res['error']['message']);
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Home(res['email'])));
+      }
+    }
   }
 
   @override
@@ -61,13 +72,14 @@ class _SignUpState extends State<SignUp> {
                       TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(hintText: 'Password'),
-                        validator: (value) =>
-                            value.isEmpty ? 'Please fill in password' : null,
+                        validator: (value) => value.isEmpty || value.length < 6
+                            ? 'Please fill in 6 characters password'
+                            : null,
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: RaisedButton(
-                          onPressed: onSubmit,
+                          onPressed: isValidate,
                           child: Text('Sign Up'),
                         ),
                       )
