@@ -41,6 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(icon: Icon(Icons.brightness_4), onPressed: null)
+        ],
       ),
       body: Center(
         child: Column(
