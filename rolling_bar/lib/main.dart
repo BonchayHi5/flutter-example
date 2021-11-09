@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dart:math' as math;
+
 void main() {
   runApp(const MyApp());
 }
@@ -11,105 +13,217 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        home: const RollingRow(
+          sizeList: ['S', 'M', 'L', 'XL', 'XXL'],
+        ));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class RollingRow extends StatefulWidget {
+  final List<String> sizeList;
+  final Duration duration;
+  final Color ballColor;
+  final Color labelColor;
+  final Color barColor;
+  final double barHeight;
+  final double ballSize;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const RollingRow({
+    Key? key,
+    required this.sizeList,
+    this.duration = const Duration(milliseconds: 400),
+    this.ballColor = const Color(0xFF393E46), //Colors.black,
+    this.labelColor = Colors.white,
+    this.barColor = const Color(0xFF222831), //Colors.blueAccent,
+    this.barHeight = 70,
+    this.ballSize = 50,
+  }) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<RollingRow> createState() => RollingRowState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class RollingRowState extends State<RollingRow> with TickerProviderStateMixin {
+  late AnimationController control;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  late Animation<double> rot;
+  late Animation<double> trasl;
+
+  double end = 22;
+
+  double begin = 0;
+
+  int index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    control = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+
+    rot = Tween<double>(
+      begin: 0,
+      end: math.pi,
+    ).animate(control);
+
+    trasl = Tween<double>(
+      begin: begin,
+      end: end,
+    ).animate(control);
+    control.forward();
+  }
+
+  void changeIndex(int selectIndex, BuildContext context) {
+    var space = MediaQuery.of(context).size.width / widget.sizeList.length - 2;
+
+    if (index < selectIndex) {
+      var forward = selectIndex - index;
+
+      moveForward(space, forward);
+    } else {
+      var backward = index - selectIndex;
+      moveBackward(space, backward);
+    }
+    index = selectIndex;
+
+    setState(() {});
+  }
+
+  void moveForward(double space, int forwardT) {
+    control = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+
+    begin = end;
+    end = end + space * forwardT;
+
+    rot = Tween<double>(
+      begin: 0,
+      end: math.pi,
+    ).animate(control);
+
+    trasl = Tween<double>(
+      begin: begin,
+      end: end,
+    ).animate(control);
+
+    control.forward();
+
+    setState(() {});
+  }
+
+  void moveBackward(double space, int backwardT) {
+    control = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+
+    begin = end;
+
+    if (index == 0) {
+      end = 22;
+    }
+    end = begin - space * backwardT;
+
+    rot = Tween<double>(
+      begin: 0,
+      end: math.pi,
+    ).animate(control);
+
+    trasl = Tween<double>(
+      begin: begin,
+      end: end,
+    ).animate(control);
+
+    control.forward();
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: SafeArea(
+          child: AnimatedBuilder(
+            animation: control,
+            builder: (_, child) => Stack(children: <Widget>[
+              Container(
+                margin: const EdgeInsets.all(16.0),
+                height: widget.barHeight,
+                decoration: BoxDecoration(
+                    color: widget.barColor,
+                    borderRadius: BorderRadius.circular(16.0)),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(
+                    widget.sizeList.length,
+                    (index) => GestureDetector(
+                      onTap: () => changeIndex(index, context),
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 50,
+                        width: 60,
+                        child: Center(
+                          child: Text(widget.sizeList[index],
+                              style: TextStyle(
+                                color: widget.labelColor,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 25,
+                left: trasl.value,
+                child: Transform(
+                  transform: Matrix4.rotationZ(rot.value),
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: widget.ballSize,
+                    width: widget.ballSize,
+                    decoration: BoxDecoration(
+                      color: widget.ballColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Transform.rotate(
+                          angle: -math.pi,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              widget.sizeList[index],
+                              style: TextStyle(color: widget.labelColor),
+                            ),
+                          )),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
