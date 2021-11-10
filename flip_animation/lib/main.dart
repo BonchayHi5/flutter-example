@@ -19,20 +19,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class RollingAnimation extends StatefulWidget {
-  const RollingAnimation({Key? key}) : super(key: key);
-
-  @override
-  _RollingAnimationState createState() => _RollingAnimationState();
-}
-
-class _RollingAnimationState extends State<RollingAnimation> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 class FlipAnimationScreen extends StatefulWidget {
   const FlipAnimationScreen({Key? key}) : super(key: key);
 
