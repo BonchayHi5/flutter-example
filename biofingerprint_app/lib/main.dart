@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   final localAuth = LocalAuthentication();
   bool _hasFingerPrint = false;
   String authorNot = 'Not Authenticate';
-  List<BiometricType> _availableBio = List<BiometricType>();
+  List<BiometricType> _availableBio = [];
 
   Future<void> checkBioSupport() async {
     bool hasFingerPrint = false;
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> getBioList() async {
-    List<BiometricType> availableBio = List<BiometricType>();
+    List<BiometricType> availableBio = [];
     try {
       availableBio = await localAuth.getAvailableBiometrics();
     } on PlatformException catch (e) {
